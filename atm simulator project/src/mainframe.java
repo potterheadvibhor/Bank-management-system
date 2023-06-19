@@ -85,6 +85,7 @@ FAST_CASH.addActionListener(this);
 PIN_CHANGE.addActionListener(this);
 BALANCE_ENQUIRY.addActionListener(this);
 MIN_STAEMENT.addActionListener(this);
+ABOUT_US.addActionListener(this);
 
  setVisible(true);
  
@@ -140,6 +141,12 @@ if(e.getSource()==MIN_STAEMENT)
     
     System.out.println("Mainframe MIN_STATEMENT "+pinnumber);
     new mini_statement(pinnumber).setVisible(true);
+}
+if(e.getSource()==ABOUT_US)
+{
+    
+    System.out.println("Mainframe MIN_STATEMENT "+pinnumber);
+    new aboutus().setVisible(true);
 }
 
 }

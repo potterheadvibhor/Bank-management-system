@@ -3,6 +3,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.ResultSet;
@@ -10,11 +12,12 @@ import java.time.format.SignStyle;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-class logingpage extends JFrame implements KeyListener,ActionListener
+class logingpage extends JFrame implements KeyListener,ActionListener,ItemListener
 {
     JLabel cardno,pin,wtm,lg;
     JTextField cd;
     JPasswordField p;
+    JCheckBox SHOW_PIN;
     JButton signin,clear,signup,BACK;
     Font f=new Font("Arial Black",Font.BOLD,20);
     Font f1=new Font("Arial Black",Font.BOLD,17);
@@ -73,6 +76,14 @@ p.setEchoChar((char)0);
 p.setBorder(new EmptyBorder(0, 0, 0, 0));
 add(p);
 
+SHOW_PIN=new JCheckBox("SHOW PIN");
+SHOW_PIN.setBounds(430,150, 100, 25);
+SHOW_PIN.setFont(f3);
+SHOW_PIN.setBackground(c);
+SHOW_PIN.setForeground(Color.BLACK);
+add(SHOW_PIN);
+
+
 signin = new JButton("SIGN IN");
 signin.setBounds(270, 190, 75, 25);
 signin.setBackground(Color.BLACK);
@@ -105,6 +116,7 @@ signup.addActionListener(this);
 clear.addActionListener(this);
 cd.addKeyListener(this);
 p.addKeyListener(this);
+SHOW_PIN.addItemListener(this);
 
 setBounds(400,100,600,400);
         getContentPane().setBackground(c);
@@ -147,12 +159,18 @@ System.out.println("Login B"+pinno);
     }
     else{
         JOptionPane.showMessageDialog(null,"PIN or CRAD_NO incorrect!!");
+        cd.setText("Enter Card No");
+            p.setEchoChar((char)0);
+        p.setText("Enter PIN");
     }
 
 }catch(Exception exc)
 {
     System.out.println(exc);
     JOptionPane.showMessageDialog(null,"exception");
+    cd.setText("Enter Card No");
+        p.setEchoChar((char)0);
+        p.setText("Enter PIN");
 }
     
     
@@ -199,6 +217,16 @@ public void keyReleased(KeyEvent e)
 
 }
 public void keyTyped(KeyEvent e){}
+public void itemStateChanged(ItemEvent e) 
+{
+    if(SHOW_PIN.isSelected())
+{
+ p.setEchoChar((char)0);
+}
+else{
+  p.setEchoChar('#');
+}
+}
     public static void main(String []args)
     {
        new logingpage();
