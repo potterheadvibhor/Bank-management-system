@@ -18,7 +18,7 @@ class logingpage extends JFrame implements KeyListener,ActionListener,ItemListen
     JTextField cd;
     JPasswordField p;
     JCheckBox SHOW_PIN;
-    JButton signin,clear,signup,BACK;
+    JButton signin,clear,signup,BACK,HELP;
     Font f=new Font("Arial Black",Font.BOLD,20);
     Font f1=new Font("Arial Black",Font.BOLD,17);
     Font f2=new Font("Arial Narrow",Font.BOLD,15);
@@ -41,6 +41,7 @@ logo =new ImageIcon(reset);
 lg= new JLabel(logo);
 lg.setBounds(100, 10, 120, 100);
 add(lg);
+
 wtm=new JLabel("WIZCRAFT ATM");
 wtm.setBounds(200, 10, 190, 90);
 wtm.setFont(f);
@@ -105,6 +106,13 @@ signup.setForeground(Color.white);
 signup.setFont(f3);
 add(signup);
 
+HELP = new JButton("BLOCK OR UNBLOCK");
+HELP.setBounds(270,260, 160, 25);
+HELP.setBackground(Color.BLACK);
+HELP.setForeground(Color.white);
+HELP.setFont(f3);
+add(HELP);
+
 BACK = new JButton("Back");
 BACK.setBounds(30, 300, 70, 30);
 BACK.setBackground(Color.BLACK);
@@ -113,6 +121,7 @@ add(BACK);
 
 signin.addActionListener(this);
 signup.addActionListener(this);
+HELP.addActionListener(this);
 clear.addActionListener(this);
 cd.addKeyListener(this);
 p.addKeyListener(this);
@@ -139,6 +148,12 @@ if(e.getSource()==signup)
   dispose();
     new signupone("").setVisible(true);
 }
+if(e.getSource()==HELP)
+{
+  
+  dispose();
+    new helppage().setVisible(true);
+}
 if(e.getSource()==signin)
 {
     int mandatory=0;
@@ -147,9 +162,12 @@ if(e.getSource()==signin)
      System.out.println("login A"+pinno);
     conn c=new conn();
     String q="select * from login where card_number='"+card_no+"' and PIN_NUMBER='"+pinno+"'";
+    String q1="select * from block where card_number='"+card_no+"' and PIN_NUMBER='"+pinno+"'";
 System.out.println("Login B"+pinno);
+ResultSet rs=null;
+    ResultSet rs1=null;
     try{
-    ResultSet rs=c.s.executeQuery(q);
+    rs = c.s.executeQuery(q);
     if(rs.next())
     {
        dispose();
@@ -158,11 +176,21 @@ System.out.println("Login B"+pinno);
    
     }
     else{
+        rs1 = c.s.executeQuery(q1);
+    if(rs1.next())
+    {
+        JOptionPane.showMessageDialog(null,"Card Blocked!!");
+        cd.setText("Enter Card No");
+            p.setEchoChar((char)0);
+        p.setText("Enter PIN");
+
+    }
+    else{
         JOptionPane.showMessageDialog(null,"PIN or CRAD_NO incorrect!!");
         cd.setText("Enter Card No");
             p.setEchoChar((char)0);
         p.setText("Enter PIN");
-    }
+    }}
 
 }catch(Exception exc)
 {
@@ -172,8 +200,23 @@ System.out.println("Login B"+pinno);
         p.setEchoChar((char)0);
         p.setText("Enter PIN");
 }
+finally {
     
-    
+    if (rs != null) {
+        try {
+            rs.close();
+        } catch (Exception e1) {
+           
+        }
+    }
+    if (rs1 != null) {
+        try {
+            rs1.close();
+        } catch (Exception e1) {
+        }
+    }
+}
+
 }
 
     }
